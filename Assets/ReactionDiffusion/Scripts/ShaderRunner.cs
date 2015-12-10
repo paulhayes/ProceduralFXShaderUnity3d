@@ -27,8 +27,8 @@ public class ShaderRunner : MonoBehaviour {
 	void Awake () {
 
 		mat = new Material( shader );
-		lastBuffer = new RenderTexture(width,height,0);
-		currentBuffer = new RenderTexture(width,height,0);
+		lastBuffer = new RenderTexture( width,height,0,format );
+		currentBuffer = new RenderTexture( width,height,0,format );        
 		lastBuffer.filterMode = mode;
 		currentBuffer.filterMode = mode;
 		lastBuffer.wrapMode = TextureWrapMode.Repeat;
