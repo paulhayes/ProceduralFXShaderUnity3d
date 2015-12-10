@@ -53,7 +53,8 @@ public class ShaderRunner : MonoBehaviour {
 	
 	void Update () {
 		mat.SetVector("_Variables", variables );
-        Graphics.Blit(lastBuffer,currentBuffer,mat);
+		mat.SetVector("_Dimensions", new Vector4(width,height,0,0) );
+		Graphics.Blit(lastBuffer,currentBuffer,mat);
 		RenderTexture tmp = lastBuffer;
 		lastBuffer = currentBuffer;
 		currentBuffer = tmp;

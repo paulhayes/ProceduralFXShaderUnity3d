@@ -4,6 +4,7 @@
 	{
 		_MainTex ("Texture", 2D) = "white" {}
 		_Variables ("Variables", Vector) = (0,0,0,0)
+		_Dimensions ("Dimensions", Vector) = (0,0,0,0)
 	}
 	SubShader
 	{
@@ -42,12 +43,13 @@
 			sampler2D _MainTex;
 			float4 _TexDim;
 			float4 _Variables;
-			const float diffusionRate = 0.05f;
+			float4 _Dimensions;
+			const float diffusionRate = 0.01f;
 
-			half4 frag (v2f i) : SV_Target
+			float4 frag (v2f i) : SV_Target
 			{
 				float4 val = tex2D(_MainTex, i.uv);
-				float2 size = float2(16,16);
+				float2 size = _Dimensions.xy;
 				float2 n = float2(1,0) / size,
 					e = float2(0,1) / size,
 					s = float2(-1,0) / size,
@@ -55,18 +57,19 @@
 				float4 v = _Variables;
 				
 				
-				//float4 lapacian = tex2D(_MainTex,i.uv+n)+tex2D(_MainTex,i.uv+e)+tex2D(_MainTex,i.uv+s)+tex2D(_MainTex,i.uv+w)-4*val;
-				float4 surrounding = tex2D(_MainTex,i.uv+n)+tex2D(_MainTex,i.uv+e)+tex2D(_MainTex,i.uv+s)+tex2D(_MainTex,i.uv+w);
-				float4 diffusion = val*(1.0-diffusionRate) + 0.25*diffusionRate*surrounding;
-				
+				float4 lapacian = tex2D(_MainTex,i.uv+n)+tex2D(_MainTex,i.uv+e)+tex2D(_MainTex,i.uv+s)+tex2D(_MainTex,i.uv+w)-4.0*val;
+				//float4 surrounding = tex2D(_MainTex,i.uv+n)+tex2D(_MainTex,i.uv+e)+tex2D(_MainTex,i.uv+s)+tex2D(_MainTex,i.uv+w);
+				//float4 diffusion = val*(1.0-diffusionRate) + diffusionRate*surrounding;
+				//lapacian = clamp( lapacian, float4(0,0,0,1), float4(1,1,1,1) );
+				float4 pop = saturate( val*(1-diffusionRate) + diffusionRate*lapacian );
 				float4 delta = float4(
-					v.x * diffusion.x - v.y * diffusion.x * diffusion.y,
-					v.z * diffusion.x * diffusion.y - v.w * diffusion.y,
+					v.x * pop.x - v.y * pop.x * pop.y,
+					v.z * pop.x * pop.y - v.w * pop.y,
 					0,
 					1	
 				);
 				
-				return val + delta;
+				return delta;
 			}
 			ENDCG
 		}
