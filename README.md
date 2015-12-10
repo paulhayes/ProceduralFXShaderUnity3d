@@ -1,2 +1,2 @@
-# ReactionDiffusionShaderUnity3d
-GPU calculated reaction diffusion system.
+# Reaction Diffusion Shader for Unity3d
+Experiment in creating GPU calculated reaction diffusion systems.
