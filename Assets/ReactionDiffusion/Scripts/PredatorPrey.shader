@@ -1,4 +1,4 @@
-﻿Shader "Hidden/ReactionDiffusion"
+﻿Shader "Hidden/PredatorPrey"
 {
 	Properties
 	{
