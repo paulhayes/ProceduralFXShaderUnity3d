@@ -3,12 +3,10 @@ using System.Collections;
 
 public class PrecisionTest : MonoBehaviour {
 
-	float b = 0.09019608f;
 	void Start () {
-		
+		Debug.LogFormat("SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBFloat)=={0}",SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBFloat));
 	}
 	
 	void Update () {
-		Debug.Log (b *= 0.98f);
 	}
 }
