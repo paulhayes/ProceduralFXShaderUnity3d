@@ -20,8 +20,8 @@ Module.expectedDataFileDownloads++;
     } else {
       throw 'using preloaded data can only be done on a web page or in a web worker';
     }
-    var PACKAGE_NAME = 'PredatorPrey.data';
-    var REMOTE_PACKAGE_BASE = 'PredatorPrey.data';
+    var PACKAGE_NAME = 'predator-prey.data';
+    var REMOTE_PACKAGE_BASE = 'predator-prey.data';
     if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
       Module['locateFile'] = Module['locateFilePackage'];
       Module.printErr('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
@@ -30,8 +30,8 @@ Module.expectedDataFileDownloads++;
                               Module['locateFile'](REMOTE_PACKAGE_BASE) :
                               ((Module['filePackagePrefixURL'] || '') + REMOTE_PACKAGE_BASE);
   
-      var REMOTE_PACKAGE_SIZE = 3797759;
-      var PACKAGE_UUID = '94b3fb4a-ce19-4b01-a04a-9e95d13a6528';
+      var REMOTE_PACKAGE_SIZE = 3797331;
+      var PACKAGE_UUID = '2b16ff9b-6e85-48e4-a249-e7101cef1cd8';
     
     function fetchRemotePackage(packageName, packageSize, callback, errback) {
       var xhr = new XMLHttpRequest();
@@ -132,12 +132,12 @@ Module['FS_createPath']('/', 'Resources', true, true);
       },
     };
 
-      new DataRequest(0, 153620, 0, 0).open('GET', '/mainData');
-    new DataRequest(153620, 153639, 0, 0).open('GET', '/methods_pointedto_by_uievents.xml');
-    new DataRequest(153639, 213487, 0, 0).open('GET', '/sharedassets0.assets');
-    new DataRequest(213487, 1401859, 0, 0).open('GET', '/Il2CppData/Metadata/global-metadata.dat');
-    new DataRequest(1401859, 3293875, 0, 0).open('GET', '/Resources/unity_default_resources');
-    new DataRequest(3293875, 3797759, 0, 0).open('GET', '/Resources/unity_builtin_extra');
+      new DataRequest(0, 153192, 0, 0).open('GET', '/mainData');
+    new DataRequest(153192, 153211, 0, 0).open('GET', '/methods_pointedto_by_uievents.xml');
+    new DataRequest(153211, 213059, 0, 0).open('GET', '/sharedassets0.assets');
+    new DataRequest(213059, 1401431, 0, 0).open('GET', '/Il2CppData/Metadata/global-metadata.dat');
+    new DataRequest(1401431, 3293447, 0, 0).open('GET', '/Resources/unity_default_resources');
+    new DataRequest(3293447, 3797331, 0, 0).open('GET', '/Resources/unity_builtin_extra');
 
     function processPackageData(arrayBuffer) {
       Module.finishedDataFileDownloads++;
@@ -153,10 +153,10 @@ Module['FS_createPath']('/', 'Resources', true, true);
           DataRequest.prototype.requests["/Il2CppData/Metadata/global-metadata.dat"].onload();
           DataRequest.prototype.requests["/Resources/unity_default_resources"].onload();
           DataRequest.prototype.requests["/Resources/unity_builtin_extra"].onload();
-          Module['removeRunDependency']('datafile_PredatorPrey.data');
+          Module['removeRunDependency']('datafile_predator-prey.data');
 
     };
-    Module['addRunDependency']('datafile_PredatorPrey.data');
+    Module['addRunDependency']('datafile_predator-prey.data');
   
     if (!Module.preloadResults) Module.preloadResults = {};
   
