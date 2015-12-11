@@ -38,6 +38,7 @@ public class ShaderRunner : MonoBehaviour {
 		
 		Texture2D initial = new Texture2D(width,height,initialTextureFormat,false);
 		initial.filterMode = mode;
+		
 		for(int i=0;i<startSquareSize;i++){
 			for(int j=0;j<startSquareSize;j++){
 				initial.SetPixel(width/2+i-startSquareSize/2,height/2+j-startSquareSize/2,startColor);				
