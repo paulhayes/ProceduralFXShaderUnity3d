@@ -1,64 +1,84 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShaderRunner : MonoBehaviour {
+public class ShaderRunner : MonoBehaviour 
+{
 
-	public Shader shader;
-	public int width;
-	public int height;
+	public Material material;
+	public int width = 128;
+	public int height = 128;
 	public FilterMode mode;
-	public RenderTextureFormat format;
-	public Vector4 variables;
-	public TextureFormat initialTextureFormat;
-	[ColorUsage(false,true,0,1000,0,1000)]
-	public Color startColor;
-	public int startSquareSize;
+	public RenderTextureFormat format = RenderTextureFormat.ARGBFloat;
+	public TextureFormat inputTextureTextureFormat = TextureFormat.RGBAFloat;
+	public Shader inputTextureBlendShader;
+	public int iterationsPerFrame = 1;
 
 	private RenderTexture lastBuffer;
 	private RenderTexture currentBuffer;
 	private Material mat;
+	private Texture2D inputTexture;
+	private Material blendMaterial;
 
-	public RenderTexture CurrentBuffer {
-		get {
+	public RenderTexture CurrentBuffer 
+	{
+		get 
+		{
 			return currentBuffer;
 		}
 	}
 
-	void Awake () {
+	public void Clear(){
+		Graphics.SetRenderTarget( lastBuffer );
+		GL.Clear(true,true,Color.black);
+		Graphics.SetRenderTarget( currentBuffer );
+		GL.Clear(true,true,Color.black);
+	}
 
-		mat = new Material( shader );
+	void UseTexture(Texture2D texture){
+		this.inputTexture = texture;
+	}
+
+	void ClearTexture(){
+		inputTexture = null;
+	}
+
+	void Start()
+	{
+
+		mat = material;
 		lastBuffer = new RenderTexture( width,height,0,format );
 		currentBuffer = new RenderTexture( width,height,0,format );        
 		lastBuffer.filterMode = mode;
 		currentBuffer.filterMode = mode;
 		lastBuffer.wrapMode = TextureWrapMode.Repeat;
 		currentBuffer.wrapMode = TextureWrapMode.Repeat;
+		lastBuffer.enableRandomWrite = true;
+		currentBuffer.enableRandomWrite = true;
 		lastBuffer.Create();
 		currentBuffer.Create();
-		
-		Texture2D initial = new Texture2D(width,height,initialTextureFormat,false);
-		initial.filterMode = mode;
-		
-		for(int i=0;i<startSquareSize;i++){
-			for(int j=0;j<startSquareSize;j++){
-				initial.SetPixel(width/2+i-startSquareSize/2,height/2+j-startSquareSize/2,startColor);				
-			}
-		}
-		
-		initial.Apply();
-		
-		Graphics.Blit(initial,lastBuffer);
-		
-		
+		blendMaterial = new Material( inputTextureBlendShader );
+
+		Clear();
+
 	}
 	
-	void Update () {
-		mat.SetVector("_Variables", variables );
-		mat.SetVector("_Dimensions", new Vector4(width,height,0,0) );
-		Graphics.Blit(lastBuffer,currentBuffer,mat);
-		RenderTexture tmp = lastBuffer;
-		lastBuffer = currentBuffer;
-		currentBuffer = tmp;
+	
+	
+	void Update () 
+	{
+		
+		for(int i=iterationsPerFrame;i>0;i--){
+			RenderTexture tmp = lastBuffer;
+			lastBuffer = currentBuffer;
+			currentBuffer = tmp;
+
+			Graphics.Blit(lastBuffer,currentBuffer,mat);
+			if( inputTexture != null ){
+				Graphics.Blit(inputTexture,currentBuffer, blendMaterial );
+			}
+
+		}
+
 	}
 	
 	
