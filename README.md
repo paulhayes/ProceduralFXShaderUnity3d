@@ -1,6 +1,9 @@
 # Reaction Diffusion Shader for Unity3d
 Experiment in creating GPU calculated reaction diffusion systems.
 
+demo
+http://paulhayes.github.io/ReactionDiffusionShaderUnity3d/competition/
+
 
 
 ### Predator prey dynamic
