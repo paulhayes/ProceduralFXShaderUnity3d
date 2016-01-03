@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class TexturePainter : MonoBehaviour {
 
@@ -11,13 +12,15 @@ public class TexturePainter : MonoBehaviour {
 	public Pattern pattern;
 	public EventSystem eventSystem;
 	public Texture2D cursor;
-	public Vector2 cursorOffset;
+	public PainterMode mode;
+	public enum PainterMode {
+		add,
+		subtract,
+		equals
+	}
 
-	private Texture2D texture;
 
 	private Material mat;
-	private bool wasOverUI = true;
-
 
 	public enum Pattern {
 		Linear,
@@ -26,35 +29,9 @@ public class TexturePainter : MonoBehaviour {
 	}
 
 	void Awake () {
-		mat = new Material(Shader.Find("Hidden/BlendAlphaPositioned"));
-		texture = new Texture2D(2*radius+2,2*radius+2,TextureFormat.RGBAFloat,false);
-		texture.wrapMode = TextureWrapMode.Clamp;
-		texture.filterMode = FilterMode.Point;
+		
+		mat = new Material(Shader.Find("Hidden/BrushAdd"));
 
-		for(int i=0;i<texture.width;i++){
-			for(int j=0;j<texture.height;j++){
-				Color c = color;
-				float dSqr = i*i+j*j;
-				float d = Mathf.Sqrt(dSqr);
-				if( pattern == Pattern.Circular ){
-					if( dSqr>radius*radius ){
-						c.a = 0;
-					}
-				}
-				else if( pattern == Pattern.Linear ){
-					
-					c.a = Mathf.InverseLerp(radius,0,d);
-
-				}
-
-				texture.SetPixel(radius-i,radius-j,c);
-				texture.SetPixel(radius-i,radius+j,c);
-				texture.SetPixel(radius+i,radius-j,c);
-				texture.SetPixel(radius+i,radius+j,c);
-
-			}
-		}
-		texture.Apply();
 	}
 	
 	void Update () {
@@ -85,16 +62,18 @@ public class TexturePainter : MonoBehaviour {
 
 	public void Paint(Vector2 pos){
 		mat.SetVector("_Pos", new Vector2(pos.x, pos.y));
-
+		mat.SetColor("_Color", mode==PainterMode.subtract ? color*-1 : color);
+		mat.SetFloat("_Radius", radius);
+		mat.SetInt("_DstMode", (int) ( mode==PainterMode.equals ? BlendMode.OneMinusSrcAlpha : BlendMode.One ));
+		mat.SetInt("_Pattern",(int) pattern);
 		Graphics.Blit(
-			texture,
+			null,
 			shaderRunner.CurrentBuffer,
 			mat 
 		);
 	}
 
 	public void Clear(){
-		//Texture2D empty = new Texture2D(shaderRunner.CurrentBuffer.width,shaderRunner.CurrentBuffer.height,TextureFormat.ARGB32);
 		shaderRunner.Clear();
 	}
 }
