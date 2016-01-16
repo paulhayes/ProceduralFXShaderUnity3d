@@ -53,6 +53,7 @@ public class TexturePainter : MonoBehaviour {
 				return;
 			}
 			if( Physics.Raycast( Camera.main.ScreenPointToRay( Input.mousePosition ), out hit )){
+				Debug.Log(hit.textureCoord);
 				Paint(hit.textureCoord);
 
 			}
@@ -61,13 +62,14 @@ public class TexturePainter : MonoBehaviour {
 	}
 
 	public void Paint(Vector2 pos){
-		mat.SetVector("_Pos", new Vector2(pos.x, pos.y));
+		mat.SetVector("_Pos", new Vector4(pos.x, pos.y,0,0));
 		mat.SetColor("_Color", mode==PainterMode.subtract ? color*-1 : color);
 		mat.SetFloat("_Radius", radius);
 		mat.SetInt("_DstMode", (int) ( mode==PainterMode.equals ? BlendMode.OneMinusSrcAlpha : BlendMode.One ));
 		mat.SetInt("_Pattern",(int) pattern);
+
 		Graphics.Blit(
-			null,
+			shaderRunner.CurrentBuffer,
 			shaderRunner.CurrentBuffer,
 			mat 
 		);

@@ -45,10 +45,6 @@ public class ShaderRunner : MonoBehaviour
 
 	void Awake(){
 		lastTexId = Shader.PropertyToID("_LastTex");
-	}
-
-	void Start()
-	{
 
 		mat = material;
 		if( targetTexture != null ){
@@ -64,8 +60,6 @@ public class ShaderRunner : MonoBehaviour
 		}
 		lastBuffer = new RenderTexture( width,height,0,format );
 		lastBuffer.enableRandomWrite = true;
-		lastBuffer.Create();
-		currentBuffer.Create();
 		lastBuffer.filterMode = mode;
 		currentBuffer.filterMode = mode;
 		lastBuffer.wrapMode = currentBuffer.wrapMode;
@@ -76,11 +70,8 @@ public class ShaderRunner : MonoBehaviour
 		}
 
 		Clear();
-
 	}
-	
-	
-	
+
 	void Update () 
 	{
 		
@@ -93,7 +84,7 @@ public class ShaderRunner : MonoBehaviour
 			}
 			Graphics.Blit(lastBuffer,currentBuffer,mat);
 			if( inputTexture != null ){
-				Graphics.Blit(inputTexture,currentBuffer, blendMaterial );
+				Graphics.Blit(inputTexture, currentBuffer, blendMaterial );
 			}
 
 		}

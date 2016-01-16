@@ -54,7 +54,7 @@
 			float4 frag (v2f i) : SV_Target
 			{
 				float4 col = _Color;
-				float2 pos = abs(i.uv-_Pos.xy) * 1/_Radius * (_ScreenParams.xy);
+				float2 pos = abs(i.uv-_Pos.xy) * (1/_Radius) * (_MainTex_TexelSize.zw);
 				if(_Pattern==0){
 					
 					col.a = saturate( 1-length(pos) );
