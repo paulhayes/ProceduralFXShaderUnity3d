@@ -1,4 +1,10 @@
-# Reaction Diffusion Shader for Unity3d
+#Procedural FX Shader
+Toolkit and demos for creating continuous procedural effects using simple shaders.
+
+## Shader Runner
+```ShaderRunner``` is the core component class for executing these shaders. It creates a double buffer and executes the desires shader a set number of iterations per frame.
+
+## Reaction Diffusion Shader for Unity3d
 Experiment in creating GPU calculated reaction diffusion systems.
 
 demo
