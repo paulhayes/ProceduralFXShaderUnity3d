@@ -1,4 +1,7 @@
-# Reaction Diffusion Shader for Unity3d
+#Procedural FX Shader
+Toolki
+
+## Reaction Diffusion Shader for Unity3d
 Experiment in creating GPU calculated reaction diffusion systems.
 
 demo
