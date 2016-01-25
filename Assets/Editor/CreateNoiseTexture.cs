@@ -29,7 +29,7 @@ public class CreateNoiseTexture : ScriptableWizard {
     		pixels[i].a = 1;
     	}
     	texture.SetPixels(pixels);
-		string path = EditorUtility.GetAssetPath(Selection.activeObject);
+		string path = AssetDatabase.GetAssetPath(Selection.activeObject);
 		if( path == "" ){
 			path = "Assets";
 		}

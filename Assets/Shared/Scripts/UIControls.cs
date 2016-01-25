@@ -8,16 +8,23 @@ using System;
 public class UIControls : MonoBehaviour {
 
 	public ShaderRunner shaderRunner;
-
+	
 	public FloatField iterations;
 
+	KeyCode toggleKey = KeyCode.Equals;
+	Canvas canvas;
+
 	void Start () {
+		canvas = transform.GetComponentInParent<Canvas>();
+		canvas.enabled = false;
 		iterations.Setup(new Action<float>(OnChange));
 		iterations.Set(shaderRunner.iterationsPerFrame);
 	}
 	
 	void Update () {
-		
+		if( Input.GetKeyDown(toggleKey) ){
+			canvas.enabled = !canvas.enabled;
+		}
 	}
 
 	void OnChange(float m){

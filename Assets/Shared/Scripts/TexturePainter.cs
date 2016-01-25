@@ -29,7 +29,9 @@ public class TexturePainter : MonoBehaviour {
 	}
 
 	void Awake () {
-		
+		if( eventSystem == null ){
+			eventSystem = GameObject.FindObjectOfType<EventSystem>();
+		}
 		mat = new Material(Shader.Find("Hidden/BrushAdd"));
 
 	}

@@ -20,6 +20,15 @@ public class ShaderRunner : MonoBehaviour
 	private Material blendMaterial;
 	private int lastTexId;
 
+	public int IterationsPerFrame {
+		set {
+			iterationsPerFrame = value;
+		}
+		get {
+			return iterationsPerFrame;
+		}
+	}
+
 	public RenderTexture CurrentBuffer 
 	{
 		get 
