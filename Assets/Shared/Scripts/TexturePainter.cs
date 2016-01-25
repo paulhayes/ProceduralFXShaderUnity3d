@@ -43,12 +43,6 @@ public class TexturePainter : MonoBehaviour {
 		if( eventSystem != null ){
 			eventSystem.IsPointerOverGameObject();
 		}
-		/*
-		if( wasOverUI != isOverUI ){
-			Cursor.SetCursor( !isOverUI?cursor:null, isOverUI?Vector2.zero:cursorOffset, CursorMode.Auto );
-		}
-		wasOverUI = isOverUI;
-		*/
 		
 		if( Input.GetMouseButton(0) ){
 			if( isOverUI ){

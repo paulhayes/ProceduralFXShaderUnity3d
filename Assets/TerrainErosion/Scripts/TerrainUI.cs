@@ -10,7 +10,7 @@ public class TerrainUI : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		rain = GameObject.FindObjectOfType<Rain>();
-		rainSlider = transform.Find("RainSlider").GetComponent<Slider>();
+		rainSlider = transform.Find("Panel/RainSlider").GetComponent<Slider>();
 	}
 	
 	void OnChange(){
