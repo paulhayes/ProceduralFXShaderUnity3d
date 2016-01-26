@@ -71,7 +71,7 @@
 				float count = readCell(_MainTex,i.uv+n)+ readCell(_MainTex,i.uv+e)+readCell(_MainTex,i.uv+s)+readCell(_MainTex,i.uv+w)+
 				 readCell(_MainTex,i.uv+n+e)+readCell(_MainTex,i.uv+s+e)+readCell(_MainTex,i.uv+s+w)+readCell(_MainTex,i.uv+n+w);
 
-				half4 output = half4(0,0,0,0);
+				half4 output = half4(0,0,0,1);
 				
 				if( alive && !all(_Survive-half4(count,count,count,count)) ){
 					output.r = 1;
@@ -83,8 +83,6 @@
 				if( _Noise > 0 && random( (_Time+0.2335)*i.uv.x,(_Time+0.1763)*i.uv.y ) < _Noise ){
 					output.r = 1;
 				}
-
-				//output.r = count;
 
 				return output;
 
