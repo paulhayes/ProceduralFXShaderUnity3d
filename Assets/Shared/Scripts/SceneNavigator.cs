@@ -19,7 +19,7 @@ public class SceneNavigator : MonoBehaviour {
 	void Start () {
 		dropdown.ClearOptions();
 		dropdown.AddOptions( scenes.ToList() );
-		canvas.enabled = false;
+		//canvas.enabled = false;
 		
 		int sceneIndex = System.Array.IndexOf(scenes,SceneManager.GetActiveScene().name );
 		if( sceneIndex == -1 ) return;
@@ -47,5 +47,6 @@ public class SceneNavigator : MonoBehaviour {
 		GameObject obj = Resources.Load<GameObject>("SceneMenu");
 		
 		GameObject.Instantiate( obj );
+		//obj.GetComponent<SceneNavigator>().canvas.enabled = true;
 	}
 }
