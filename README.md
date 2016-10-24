@@ -8,7 +8,7 @@ Toolkit and demos for creating continuous procedural effects using simple shader
 Experiment in creating GPU calculated reaction diffusion systems.
 
 demo
-http://paulhayes.github.io/ReactionDiffusionShaderUnity3d/competition/
+http://paulhayes.github.io/ProceduralFXShaderUnity3d/competition/
 
 
 
