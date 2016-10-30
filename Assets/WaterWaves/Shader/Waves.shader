@@ -45,18 +45,19 @@
 			sampler2D _MainTex;
 			sampler2D _LastTex;
 			sampler2D _Diffusion;
-			float4 _Variables;
+			half4 _Variables;
 			half4 _MainTex_TexelSize;
 
 			float4 frag (v2f i) : SV_Target
 			{
+				half4 v = _Variables;
 				float4 val = tex2D(_MainTex, i.uv);
 				float oldPos = tex2D(_LastTex,i.uv).z;
 				float2 e = float2(1,0) * _MainTex_TexelSize.xy,
 					n = float2(0,1) * _MainTex_TexelSize.xy,
 					w = float2(-1,0) * _MainTex_TexelSize.xy,
 					s = float2(0,-1) * _MainTex_TexelSize.xy;
-				float4 v = _Variables;
+				
 				
 
 				//float4 lapacian = tex2D(_MainTex,i.uv+n)+tex2D(_MainTex,i.uv+e)+tex2D(_MainTex,i.uv+s)+tex2D(_MainTex,i.uv+w)-4.0*val;

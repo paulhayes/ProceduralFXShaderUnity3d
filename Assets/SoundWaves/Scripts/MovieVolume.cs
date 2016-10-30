@@ -4,11 +4,9 @@ using System.Collections;
 public class MovieVolume : MonoBehaviour {
 
 	public new AudioSource audio;
-	public MovieTexture movie;
 	public float sensitivity;
 
 	void Start () {
-		//audio.clip = movie.audioClip;
 	}
 	
 	void Update () {

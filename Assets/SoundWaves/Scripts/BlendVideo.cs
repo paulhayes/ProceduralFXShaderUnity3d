@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BlendVideo : MonoBehaviour {
 
+#if !UNITY_WEBGL
 	public Material blendMaterial;
 	public string propertyName;
 	public MovieTexture movieTexture;
@@ -18,4 +19,6 @@ public class BlendVideo : MonoBehaviour {
 		if( movieTexture == null || !movieTexture.isPlaying ) return;
 		blendMaterial.SetTexture(propertyHash,movieTexture);
 	}
+
+#endif
 }

@@ -15,6 +15,7 @@ public class ShaderRunner : MonoBehaviour
 
 	private RenderTexture lastBuffer;
 	private RenderTexture currentBuffer;
+	private RenderTexture tripleBuffer;
 	private Material mat;
 	private Texture2D inputTexture;
 	private Material blendMaterial;
@@ -64,11 +65,9 @@ public class ShaderRunner : MonoBehaviour
 		}
 		else {
 			currentBuffer = new RenderTexture( width,height,0,format );        
-			currentBuffer.enableRandomWrite = true;
 			currentBuffer.wrapMode = TextureWrapMode.Repeat;
 		}
 		lastBuffer = new RenderTexture( width,height,0,format );
-		lastBuffer.enableRandomWrite = true;
 		lastBuffer.filterMode = mode;
 		currentBuffer.filterMode = mode;
 		lastBuffer.wrapMode = currentBuffer.wrapMode;
@@ -77,7 +76,9 @@ public class ShaderRunner : MonoBehaviour
 		if( inputTextureBlendShader ){
 			blendMaterial = new Material( inputTextureBlendShader );
 		}
-
+		if( mat.HasProperty(lastTexId) ){
+			tripleBuffer = new RenderTexture( currentBuffer.width, currentBuffer.height, currentBuffer.depth, currentBuffer.format );
+		}
 		Clear();
 	}
 
@@ -85,13 +86,21 @@ public class ShaderRunner : MonoBehaviour
 	{
 		
 		for(int i=iterationsPerFrame;i>0;i--){
+
+			
 			RenderTexture tmp = lastBuffer;
 			lastBuffer = currentBuffer;
 			currentBuffer = tmp;
+
+				
 			if( mat.HasProperty(lastTexId) ){
-				mat.SetTexture(lastTexId,currentBuffer);
+				
+				Graphics.Blit(currentBuffer,tripleBuffer);
+				mat.SetTexture(lastTexId,tripleBuffer);
+				//Debug.LogFormat("Iteration {0}, {1}",i,currentBuffer.GetNativeDepthBufferPtr());
 			}
 			Graphics.Blit(lastBuffer,currentBuffer,mat);
+
 			if( inputTexture != null ){
 				Graphics.Blit(inputTexture, currentBuffer, blendMaterial );
 			}

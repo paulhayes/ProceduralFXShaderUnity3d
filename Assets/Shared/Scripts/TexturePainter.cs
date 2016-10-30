@@ -13,6 +13,7 @@ public class TexturePainter : MonoBehaviour {
 	public EventSystem eventSystem;
 	public Texture2D cursor;
 	public PainterMode mode;
+	public PainterMode altMode;
 	public enum PainterMode {
 		add,
 		subtract,
@@ -43,23 +44,26 @@ public class TexturePainter : MonoBehaviour {
 		if( eventSystem != null ){
 			eventSystem.IsPointerOverGameObject();
 		}
-		
+
+		if( isOverUI ){
+			return;
+		}
+
 		if( Input.GetMouseButton(0) ){
-			if( isOverUI ){
-				return;
-			}
+			
 			if( Physics.Raycast( Camera.main.ScreenPointToRay( Input.mousePosition ), out hit )){
-				Debug.Log(hit.textureCoord);
-				Paint(hit.textureCoord);
+				//Debug.Log(hit.textureCoord);
+				Paint(hit.textureCoord, Input.GetKey(KeyCode.LeftShift));
 
 			}
 		}
 
 	}
 
-	public void Paint(Vector2 pos){
+	public void Paint(Vector2 pos, bool useAltMode = false){
+		PainterMode modeToUse = useAltMode ? altMode : mode;
 		mat.SetVector("_Pos", new Vector4(pos.x, pos.y,0,0));
-		mat.SetColor("_Color", mode==PainterMode.subtract ? color*-1 : color);
+		mat.SetColor("_Color", modeToUse==PainterMode.subtract ? color*-1 : color);
 		mat.SetFloat("_Radius", radius);
 		mat.SetInt("_DstMode", (int) ( mode==PainterMode.equals ? BlendMode.OneMinusSrcAlpha : BlendMode.One ));
 		mat.SetInt("_Pattern",(int) pattern);

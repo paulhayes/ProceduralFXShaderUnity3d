@@ -14,6 +14,7 @@ public class SceneNavigator : MonoBehaviour {
 
 	void Awake(){
 		DontDestroyOnLoad( gameObject );
+
 	}
 	
 	void Start () {
@@ -24,9 +25,14 @@ public class SceneNavigator : MonoBehaviour {
 		int sceneIndex = System.Array.IndexOf(scenes,SceneManager.GetActiveScene().name );
 		if( sceneIndex == -1 ) return;
 		dropdown.value = sceneIndex;
+
+		int numScenes = SceneManager.sceneCountInBuildSettings;
+		// When Unity 5.5 comes out I can use SceneUtility.GetScenePathByBuildIndex
+		// to iterate over scenes and populate the dropdown with them.
+
 		
 	}
-	
+
 	void Update () {
 		if( Input.GetKeyDown( toggleKey ) ){
             canvas.enabled = !canvas.enabled;
@@ -44,8 +50,10 @@ public class SceneNavigator : MonoBehaviour {
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 	static void OnSceneLoad(){
 		Debug.Log ("Scene loaded");
+
+
 		GameObject obj = Resources.Load<GameObject>("SceneMenu");
-		
+
 		GameObject.Instantiate( obj );
 		//obj.GetComponent<SceneNavigator>().canvas.enabled = true;
 	}

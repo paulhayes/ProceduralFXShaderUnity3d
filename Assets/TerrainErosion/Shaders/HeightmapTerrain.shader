@@ -55,13 +55,15 @@
 		{
 
 			float4 pos = float4( TRANSFORM_TEX( v.vertex.xz, _Heightmap ), 1, 1 );
-			float4 forward = float4(_Heightmap_TexelSize.x,_Heightmap_TexelSize.y,0,0);
-			float4 right = float4(_Heightmap_TexelSize.x,_Heightmap_TexelSize.y,0,0);
+			float4 forward = float4(0,_Heightmap_TexelSize.y,0,0);
+			float4 right = float4(_Heightmap_TexelSize.x,0,0,0);
 			float4 height = tex2Dlod(_Heightmap,pos);
 			float3 forwardHeightDelta = tex2Dlod(_Heightmap, pos+forward) - tex2Dlod(_Heightmap, pos-forward);
 			float3 rightHeightDelta = tex2Dlod(_Heightmap, pos+right) - tex2Dlod(_Heightmap, pos-right);
-			float3 unit = _Scale * float3(_Heightmap_TexelSize.x,2.0,_Heightmap_TexelSize.y);
+			float3 unit = _Scale * float3(_Heightmap_TexelSize.x,1.0,_Heightmap_TexelSize.y);
 			v.normal = normalize( cross( (unit * float3(0.0,dot(forwardHeightDelta,_HeightMatrix),1.0)), ( unit*float3(1.0,dot(rightHeightDelta,_HeightMatrix),0.0)) ) );
+			//v.normal = normalize( cross( (unit * float3(0.0,forwardHeightDelta.x,1.0)), ( unit*float3(1.0,rightHeightDelta.x,0.0)) ) );
+
 			float3 noise = tex2Dlod(_NoiseTex, float4( v.vertex.xz,1,1));
 			v.vertex.y = dot( _HeightMatrix, height );
 			v.vertex.xz += _VertexNoise * _Heightmap_TexelSize.xy * ( noise.xz - float2(0.5,0.5) );
@@ -85,13 +87,17 @@
 			} else {
 				ground = lerp(steepGround,rock,2*(incline-0.5));
 			}
-			ground = lerp( ground, tex2D (_MudTex, IN.uv_MudTex), saturate( IN.color.b * 200 - incline )  );
-			float wateryness = saturate( max(IN.color.b - 0.0001,0) * 1000 );
-			c = lerp(ground, _WaterColor, wateryness );
-			o.Albedo = c.rgb * lerp(float3(1,1,1),float3(1,0,0),IN.color.a*100);
+			fixed m = saturate( IN.color.b * 200 - incline );
+			//ground = lerp( ground, tex2D (_MudTex, IN.uv_MudTex),  m );
+			//float wateryness = saturate( max(IN.color.b - 0.001,0) * 200 );
+			float wateryness = saturate( max(IN.color.b,0) * 2000 );
+			c = lerp(ground, _WaterColor * (_WaterColor.a) + ground * (1-_WaterColor.a), wateryness );
+			//o.Albedo = c.rgb * lerp(float3(1,1,1),float3(1,0,0),IN.color.a*100);
+			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
-			o.Metallic = lerp( 0,0.3,wateryness );
-			o.Smoothness = lerp( 0,1,wateryness );
+			o.Metallic = lerp( 0,_Metallic,wateryness );
+			o.Smoothness = lerp( 0,_Glossiness,wateryness );
+			//o.Albedo = ( o.Normal * 0.5 ) + fixed3(0.5,0.5,0.5);
 			o.Alpha = c.a;
 		}
 		ENDCG
