@@ -4,21 +4,11 @@ Toolkit and demos for creating continuous procedural effects using simple shader
 ## Shader Runner
 ```ShaderRunner``` is the core component class for executing these shaders. It creates a double buffer and executes the desires shader a set number of iterations per frame.
 
-## Reaction Diffusion Shader for Unity3d
-Experiment in creating GPU calculated reaction diffusion systems.
+## Procedural FX Shader for Unity3d
+Experiment in creating GPU calculated reaction diffusion systems and other parralizable grid caluclations.
 
-demo
-http://paulhayes.github.io/ProceduralFXShaderUnity3d/competition/
+The core of this library is the simple ShaderRunner class which uses a double buffer to create stepped time grid calculations to generate interesting simulations and effects.
 
+###Demos in webgl
+http://paulhayes.github.io/ProceduralFXShaderUnity3d/
 
-
-### Predator prey dynamic
-
-Slow swirlies
-x=1.03, y=0.5, z=1.2, w=0.05
-
-Fire Walk With me
-x=1.03, y=0.5, z=1.5, w=0.05
-
-Carpet shop
-x=1.1, y=0.5, z=1.5, w=0.05
