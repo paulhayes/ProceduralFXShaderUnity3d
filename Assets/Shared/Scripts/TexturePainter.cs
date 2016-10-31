@@ -42,7 +42,7 @@ public class TexturePainter : MonoBehaviour {
 		RaycastHit hit;
 		bool isOverUI = false;
 		if( eventSystem != null ){
-			eventSystem.IsPointerOverGameObject();
+			isOverUI = eventSystem.IsPointerOverGameObject();
 		}
 
 		if( isOverUI ){
